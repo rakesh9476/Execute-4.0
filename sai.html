@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Guidance Bot</title>
+    <style>
+    :root {
+        --primary-color: #2563eb;
+        --secondary-color: #1e40af;
+        --accent-color: #60a5fa;
+        --text-color: #1f2937;
+        --background-color: #f8fafc;
+        --card-bg: #ffffff;
+    }
+
+    body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        color: var(--text-color);
+        line-height: 1.6;
+        padding: 1rem;
+        min-height: 100vh;
+    }
+
+    .nav-top {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        background-color: var(--primary-color);
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-button:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .bot-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 1.5rem;
+        background: var(--card-bg);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .message {
+        margin-bottom: 2rem;
+        font-size: 1.125rem;
+        padding: 1.5rem;
+        background: rgba(243, 244, 246, 0.5);
+        border-radius: 0.75rem;
+        line-height: 1.75;
+        border: 1px solid rgba(209, 213, 219, 0.3);
+    }
+
+    .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    .button-group button, .button-group a {
+        flex: 1 1 auto;
+        min-width: 250px; /* Increased min-width for wider buttons */
+    }
+
+    button {
+        padding: 0.875rem 1.5rem;
+        border: none;
+        border-radius: 0.75rem;
+        background: var(--primary-color);
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease, transform 0.3s ease; /* Added transform transition */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover {
+        background: var(--secondary-color);
+        transform: translateY(-1px) scale(1.05); /* Added zoom-in effect */
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    button:focus {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 2px;
+    }
+
+    /* Specialization specific button styles */
+    button[onclick*="CSE"] { background: #3b82f6; }
+    button[onclick*="AI"] { background: #10b981; }
+    button[onclick*="Cyber"] { background: #ef4444; }
+    button[onclick*="Data"] { background: #8b5cf6; }
+    button[onclick*="IT"] { background: #f59e0b; }
+
+    @media (max-width: 640px) {
+        .bot-container {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+        
+        .message {
+            font-size: 1rem;
+            padding: 1rem;
+        }
+        
+        button {
+            font-size: 0.875rem;
+            padding: 0.75rem 1rem;
+        }
+    }
+
+    /* Animation for message transitions */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message {
+        animation: fadeIn 0.3s ease-out;
+    }
+
+    /* Highlight keywords in messages */
+    strong {
+        color: var(--secondary-color);
+        font-weight: 600;
+    }
+</style>
+</head>
+<body>
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="bot-container" id="bot">
+            <div class="message" id="bot-message">Hello! What would you like to know?</div>
+            <div class="button-group" id="bot-buttons">
+                <button onclick="showSections('btech')">B.Tech Branches</button>
+                <a href="courses.html"><button>Courses</button></a>
+                <a href="internships.html"><button>Internships</button></a>
+                <a href="certifications.html"><button>Certificates</button></a>
+            </div>
+        </div>
+
+        <script>
+            function showSections(section) {
+                const botMessage = document.getElementById('bot-message');
+                const botButtons = document.getElementById('bot-buttons');
+
+                if (section === 'btech') {
+                    botMessage.innerHTML = 'Select a B.Tech branch to know more:';
+                    botButtons.innerHTML = `
+                        <button onclick="showBranchInfo('CSE')">CSE</button>
+                        <button onclick="showBranchInfo('Mechanical')">Mechanical</button>
+                        <button onclick="showBranchInfo('Civil')">Civil</button>
+                        <button onclick="showBranchInfo('EEE')">EEE</button>
+                        <button onclick="showBranchInfo('ECE')">ECE</button>
+                        <button onclick="showBranchInfo('Biotechnology')">Biotechnology</button>
+                        <button onclick="showBranchInfo('Aerospace')">Aerospace Engineering</button>
+                    `;
+                }
+            }
+
+            function showBranchInfo(branch) {
+                const branchInfo = {
+                    'CSE': 'Choose a specialization to know more:',
+                    'Mechanical': '*Mechanical Engineering* is a branch of engineering that focuses on designing, building, and maintaining machines and mechanical systems. It involves studying concepts like mechanics, thermodynamics, materials, and energy. Mechanical engineers work on products like engines, vehicles, machines, and tools used in industries.',
+
+                    'Civil': '*Civil Engineering* is a branch of engineering that focuses on designing, constructing, and maintaining infrastructure projects like buildings, roads, bridges, dams, and water systems. Civil engineers ensure structures are safe, durable, and environmentally friendly. They play a key role in shaping cities and improving public facilities.<br>Civil Engineering Skills Required:<br>Structural analysis and design<br>Project management and planning<br>AutoCAD and other design software<br>Geotechnical knowledge<br>Problem-solving and critical thinking<br>Knowledge of environmental and safety regulations<br>Average Salary:<br>Entry-level: ₹3-5 LPA (INR) / $60,000 - $70,000 (USD)<br>Mid-level: ₹6-10 LPA / $80,000 - $100,000<br>Senior-level: ₹12-20 LPA / $110,000+<br>Job Opportunities:Structural Engineer<br>Site Engineer<br>Construction Project Manager<br>Urban Planner<br>Environmental Engineer<br>Transportation Engineer',
+
+                    'EEE': '*Electrical and Electronics Engineering (EEE)* is a branch of engineering that deals with the study and application of electricity, electronics, and electromagnetism. It covers topics like electrical circuits, power generation, control systems, and electronic devices. EEE engineers work on designing and maintaining systems like power plants, electric motors, and electronic gadgets.Aerospace Engineering<br>Skills Required:<br>  Aerodynamics and propulsion knowledge<br>Proficiency in aerospace design software (CATIA, MATLAB)<br>Problem-solving and analytical skills<br>Knowledge of fluid mechanics and materials science<br>Attention to detail and innovation<br>Average Salary:<br>Entry-level: ₹4-6 LPA / $70,000 - $80,000<br>Mid-level: ₹8-15 LPA / $90,000 - $110,000<br>Senior-level: ₹18-30 LPA / $120,000+<br>Job Opportunities:<br>Aerospace Design Engineer<br>Flight Test Engineer<br>Propulsion Engineer<br>Systems Engineer<br>Aircraft Maintenance Engineer',
+
+                    'ECE': '*Electronics and Communication Engineering (ECE)* is a branch of engineering that focuses on designing and developing electronic devices and communication systems. It covers topics like circuits, signal processing, telecommunications, embedded systems, and robotics. ECE engineers work on technologies like mobile phones, satellites, and communication networks.<br>Electrical and Electronics Engineering (EEE)<br>skills:<br>MATLAB/Simulink: For circuit simulations.<br>Python: For AI models in power systems.<br>C: For embedded systems and microcontrollers.<br>VHDL/Verilog: For hardware description and FPGA programming.<br>Assembly Language: For low-level hardware programming.<br>carrier options and salery:<br>Electrical Design Engineer – Design electrical systems for industries. (Salary: $70,000 – $130,000)<br>Power Systems Engineer – Work on power generation and distribution. (Salary: $75,000 – $140,000)<br>Control Systems Engineer – Design automated systems and controls. (Salary: $80,000 – $150,000',
+
+                    'Biotechnology': '*Biotechnology* is the use of living organisms, cells, and biological systems to develop products and technologies that improve human life. It involves areas like genetic engineering, medical research, agriculture, and environmental science. For example, biotechnology is used to create vaccines, improve crop yields, and develop eco-friendly solutions.<br> Biotechnology<br>skills:<br>Python: For bioinformatics and data analysis.<br>R: For statistical genomics and bioinformatics.<br>MATLAB: For modeling biological systems.<br>Perl: For genome analysis and research data processing.<br>Responsibilities: Research and develop bio-products,<br> genetic engineering, <br>and improving agricultural yield.<br>Salary:<br>Entry-level: $45,000 – $60,000 per year (₹4 – ₹6 LPA in India)<br>Experienced: $80,000 – $120,000 (₹12 – ₹20 LPA in India)',
+
+                    'Aerospace': '*Aerospace Engineering* is the branch of engineering that focuses on designing, developing, and maintaining aircraft, spacecraft, and related systems. It covers two main areas: *aeronautical engineering* (dealing with airplanes) and *astronautical engineering* (dealing with spacecraft). Aerospace engineers work on projects like building jets, rockets, satellites, and space exploration vehicles.<br>Aerospace Engineering <br>skills:<br>Python: For simulations and data analysis.<br>MATLAB/Simulink: For aerospace system simulations.<br>C++: For control system programming.<br>FORTRAN: Still used in legacy aerospace systems.<br>carrier options and salery:<br>Aerospace Engineer – Design, build, and test aircraft and spacecraft.<br> (Salary: $80,000 – $160,000)<br>Flight Engineer – Ensure flight systems function correctly. (Salary: $75,000 – $140,000)<br>Satellite Engineer – Develop and maintain satellite systems. (Salary: $85,000 – $160,000)' };
+
+                const botMessage = document.getElementById('bot-message');
+                const botButtons = document.getElementById('bot-buttons');
+
+                if (branch === 'CSE') {
+                    botMessage.innerHTML = branchInfo[branch];
+                    botButtons.innerHTML = `
+                        <button onclick="showSpecializationInfo('CSE General')">CSE General</button>
+                        <button onclick="showSpecializationInfo('AI ML')">AI ML</button>
+                        <button onclick="showSpecializationInfo('Cyber Security')">Cyber Security</button>
+                        <button onclick="showSpecializationInfo('Data Science')">Data Science</button>
+                        <button onclick="showSpecializationInfo('IT')">IT</button>
+                    `;
+                } else {
+                    botMessage.innerHTML = branchInfo[branch];
+                    botButtons.innerHTML = '<button onclick="location.reload()">Back to Start</button>';
+                }
+            }
+
+                const specializationInfo = {
+                    'CSE General':{ 
+                        info:'Computer Science and Engineering (CSE) is the study of computers, how they work, and how to create software and applications. It covers topics like programming, data handling, computer networks, and cybersecurity. The goal is to develop skills for building and managing computer systems and software.',
+                        skills: 'Programming, problem-solving, algorithms, system design.',
+                        salary: '$60,000 to $120,000 per year.',
+                        opportunities: 'Software developer, system analyst, data engineer, AI specialist.'},
+
+
+                    'AI ML':{
+                        info: 'Artificial Intelligence (AI) is the science of making machines think and act like humans, such as recognizing speech, solving problems, or making decisions.<br> Machine Learning (ML) is a part of AI where machines learn from data and improve their performance over time without being explicitly programmed. For example, an ML model can learn to recognize images or predict trends by analyzing past data.  ',
+                        skills: 'Python, machine learning algorithms, data analysis, neural networks.',
+                        salary: '$80,000 to $150,000 per year.',
+                        opportunities: 'AI engineer, ML specialist, data scientist.'},
+
+                    'Cyber Security':{
+                        info: '*Cybersecurity* is the practice of protecting computers, networks, and data from unauthorized access, attacks, or damage. It involves using tools and techniques to secure systems, detect threats, and prevent data breaches. For example, using strong passwords, firewalls, and antivirus software are basic ways to ensure cybersecurity.',
+                        skills: 'Network security, cryptography, ethical hacking, risk management.',
+                        salary: '$70,000 to $130,000 per year.',
+                        opportunities: 'Security analyst, cybersecurity consultant, ethical hacker.'
+                },
+
+                    'Data Science':{  
+                    info:'Data Science is the field of studying and analyzing large amounts of data to find useful insights and patterns. It involves using techniques from statistics, computer science, and machine learning to process data, make predictions, and help in decision-making. For example, data science can help companies understand customer behavior or predict market trends.',
+                    skills: 'Statistics, Python, data visualization, machine learning.',
+                    salary: '$75,000 to $140,000 per year.',
+                    opportunities: 'Data scientist, data analyst, business intelligence analyst.'
+                },
+
+                    'IT':{
+                        info: '*Information Technology (IT)* is the use of computers, software, and networks to store, process, and manage information. It involves tasks like setting up computer systems, managing databases, ensuring cybersecurity, and providing tech support. IT helps businesses and organizations handle their digital information efficiently.',
+                    
+                    skills: 'Networking, database management, cybersecurity, cloud computing.',
+                    salary: '$60,000 to $110,000 per year.',
+                    opportunities: 'IT support specialist, network administrator, database administrator.'
+                }
+                };
+
+                function showSpecializationInfo(specialization) {
+                const detail = specializationInfo[specialization];
+                const botMessage = document.getElementById('bot-message');
+                const botButtons = document.getElementById('bot-buttons');
+
+                botMessage.innerHTML =`${detail.info}<br>Do you want to know more?`;
+                botButtons.innerHTML = `
+                    <button onclick="showMoreInfo('${specialization}')">Yes</button>
+                    <button onclick="location.reload()">No</button>
+            ` ;
+            }
+
+            function showMoreInfo(specialization) {
+                const botMessage = document.getElementById('bot-message');
+                const botButtons = document.getElementById('bot-buttons');
+                botMessage.innerHTML = 'Select what you want to know more about:';
+                botButtons.innerHTML = `
+                    <button onclick="displayMoreInfo('${specialization}', 'skills')">Skills Required</button>
+                    <button onclick="displayMoreInfo('${specialization}', 'salary')">Average Salary</button>
+                    <button onclick="displayMoreInfo('${specialization}', 'opportunities')">Job Opportunities</button>
+            ` ;
+            }
+
+            function displayMoreInfo(specialization, infoType) {
+                const detail = specializationInfo[specialization];
+                const botMessage = document.getElementById('bot-message');
+                botMessage.innerHTML = detail[infoType];
+                document.getElementById('bot-buttons').innerHTML = '<button onclick="location.reload()">Back to Start</button>';
+            }
+        </script>
+    </main>
+</body>
+</html>

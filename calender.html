@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competition Calendar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            color: #222;
+            font-size: 28px;
+        }
+
+        .quote-box {
+            font-size: 16px;
+            font-style: italic;
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+            max-width: 600px;
+        }
+
+        .calendar-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .month-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .month-header button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .month-header button:hover {
+            background-color: #0056b3;
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .day {
+            padding: 14px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            font-weight: bold;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .day.event::after {
+            content: "🏆";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 14px;
+        }
+
+        .day.event {
+            background-color: #007bff;
+            color: white;
+            position: relative;
+        }
+
+        .day:hover {
+            background-color: #0056b3;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .event-list {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .event-list th, .event-list td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .event-list th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Competition Calendar</h1>
+
+    <div class="quote-box" id="quote"></div>
+
+    <div class="calendar-container">
+        <div class="month-header">
+            <button id="prevMonth">❮ Prev</button>
+            <h2 id="monthYear"></h2>
+            <button id="nextMonth">Next ❯</button>
+        </div>
+
+        <div class="calendar" id="calendar"></div>
+        <p id="message" class="message"></p>
+
+        <table class="event-list hidden" id="eventTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Competition</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody id="eventList"></tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendar = document.getElementById("calendar");
+            const message = document.getElementById("message");
+            const eventTable = document.getElementById("eventTable");
+            const eventList = document.getElementById("eventList");
+            const monthYear = document.getElementById("monthYear");
+            const prevMonthBtn = document.getElementById("prevMonth");
+            const nextMonthBtn = document.getElementById("nextMonth");
+            const quoteBox = document.getElementById("quote");
+
+            const quotes = [
+                "Success is not final, failure is not fatal: it is the courage to continue that counts. – Winston Churchill",
+                "The only way to do great work is to love what you do. – Steve Jobs",
+                "Believe you can and you're halfway there. – Theodore Roosevelt",
+                "Opportunities don't happen. You create them. – Chris Grosser",
+                "Don't let yesterday take up too much of today. – Will Rogers",
+                "If you are not willing to risk the usual, you will have to settle for the ordinary. – Jim Rohn"
+            ];
+
+            function showRandomQuote() {
+                const randomIndex = Math.floor(Math.random() * quotes.length);
+                quoteBox.textContent = quotes[randomIndex];
+            }
+
+            showRandomQuote();
+
+            const competitions = {
+                "2025-03-20": { name: "Google Code Jam", time: "10:00 AM" },
+                "2025-03-25": { name: "Facebook Hacker Cup", time: "2:00 PM" },
+                "2025-03-30": { name: "ICPC Contest", time: "4:00 PM" },
+                "2025-04-05": { name: "TCS CodeVita", time: "6:00 PM" }
+            };
+
+            const months = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+
+            function renderCalendar(month, year) {
+                calendar.innerHTML = "";
+                monthYear.textContent = `${months[month]} ${year}`;
+
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    calendar.appendChild(document.createElement("div"));
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateString = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+                    const dayDiv = document.createElement("div");
+                    dayDiv.classList.add("day");
+                    dayDiv.textContent = day;
+
+                    if (competitions[dateString]) {
+                        dayDiv.classList.add("event");
+                    }
+
+                    dayDiv.addEventListener("click", function () {
+                        message.textContent = competitions[dateString] 
+                            ? `Competition on ${dateString}: ${competitions[dateString].name} at ${competitions[dateString].time}` 
+                            : "No competitions on this date.";
+                    });
+
+                    calendar.appendChild(dayDiv);
+                }
+            }
+
+            prevMonthBtn.addEventListener("click", () => {
+                currentMonth = (currentMonth - 1 + 12) % 12;
+                renderCalendar(currentMonth, currentYear);
+            });
+
+            nextMonthBtn.addEventListener("click", () => {
+                currentMonth = (currentMonth + 1) % 12;
+                renderCalendar(currentMonth, currentYear);
+            });
+
+            renderCalendar(currentMonth, currentYear);
+        });
+    </script>
+
+</body>
+</html>

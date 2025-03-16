@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career AI Interface</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .welcome-text {
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+            background-color: white; /* New background color */
+            color: black; /* New text color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .nav-bottom {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .nav-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            background: white;
+            color: var(--dark);
+            text-decoration: none;
+            transition: all 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100px;
+        }
+        .nav-button:hover {
+            background: var(--light);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+        }
+        .nav-button i {
+            color: var(--primary);
+        }
+    </style>
+    <script>
+        function navigateToAI() {
+            window.location.href = 'sai.html';
+        }
+    </script>
+</head>
+<body></body>
+    <!-- Top Navigation -->
+    <nav class="nav-top">
+        <div class="user-menu">
+            <button class="user-button" onclick="toggleMenu()">
+                <i data-lucide="user-circle"></i>
+                <span>User</span>
+                <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="dropdown-menu" id="dropdown">
+                <a href="calender.html" class="user-button">
+                    <i data-lucide="calendar"></i>
+                    Calendar
+                </a>
+                <button class="user-button" onclick="alert('Signing Out')">
+                    <i data-lucide="log-out"></i>
+                    Sign Out
+                </button>
+            </div>
+        </div>
+        <div class="user-button" onclick="navigateToAI()">
+            <i data-lucide="cpu"></i>
+            <span>AI</span>
+        </div>
+    </nav>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" class="search-input" placeholder="Search for courses, certifications, competitions...">
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <h1 class="welcome-text">LEVEL UP CAREER</h1>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-bottom">
+        <a href="courses.html" class="nav-button">
+            <i data-lucide="book-open"></i>
+            <span>Courses</span>
+        </a>
+        <a href="certifications.html" class="nav-button">
+            <i data-lucide="award"></i>
+            <span>Certifications</span>
+        </a>
+        <a href="competitions.html" class="nav-button">
+            <i data-lucide="trophy"></i>
+            <span>Competitions</span>
+        </a>
+        <a href="internships.html" class="nav-button">
+            <i data-lucide="briefcase"></i>
+            <span>Internships</span>
+        </a>
+        <a href="roadmap.html" class="nav-button">
+            <i data-lucide="map"></i>
+            <span>Roadmap</span>
+        </a>
+    </nav>
+
+    <script src="script.js"></script>
+</body>
+</html>
